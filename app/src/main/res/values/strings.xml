@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">小区天眼</string>
+    <string name="scene_activity">场景模式</string>
+    <string name="title_activity_add_surface">新增监控点</string>
+</resources>
