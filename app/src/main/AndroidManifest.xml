@@ -20,11 +20,15 @@
         <activity
             android:name=".SceneActivity"
             android:label="@string/scene_activity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".add_surface" android:label="@string/title_activity_add_surface"
-            android:launchMode="standard">
-
-        </activity>
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".add_surface"
+            android:label="@string/title_activity_add_surface"
+            android:launchMode="standard"/>
+        <activity
+            android:name=".SubScene"
+            android:label="@string/title_activity_sub_scene"
+            />
     </application>
 
 </manifest>
