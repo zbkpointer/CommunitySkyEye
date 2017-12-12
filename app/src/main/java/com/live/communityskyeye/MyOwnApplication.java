@@ -33,15 +33,13 @@ public class MyOwnApplication extends Application {
             Connector.getDatabase();
             Place place1 = new Place();
             place1.setPlace_name("小区围墙");
-            if (!place1.isSaved()){
-                place1.save();
-            }
+            place1.save();
+
 
             Place place2 = new Place();
             place2.setPlace_name("绿化");
-            if (!place2.isSaved()) {
-                place2.save();
-            }
+            place2.save();
+
 
             Place place3 = new Place();
             place3.setPlace_name("停车场");

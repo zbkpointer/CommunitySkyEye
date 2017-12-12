@@ -15,7 +15,6 @@ public class SubScene extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_scene);
         Intent intent = getIntent();
-
         setTitle(intent.getStringExtra("sceneName"));
     }
 
