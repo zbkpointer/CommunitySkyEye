@@ -27,8 +27,7 @@
             android:launchMode="standard" />
         <activity
             android:name=".SubScene"
-            android:label="@string/title_activity_sub_scene"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_sub_scene"></activity>
     </application>
 
 </manifest>
