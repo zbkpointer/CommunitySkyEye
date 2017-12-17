@@ -20,7 +20,7 @@
         <activity
             android:name=".SceneActivity"
             android:label="@string/scene_activity"
-            android:launchMode="singleTask" />
+            android:launchMode="standard" />
         <activity
             android:name=".add_surface"
             android:label="@string/title_activity_add_surface"

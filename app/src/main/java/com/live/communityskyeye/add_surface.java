@@ -25,10 +25,18 @@ public class add_surface extends AppCompatActivity {
                 EditText et = (EditText) findViewById(R.id.add_place);
                 //Log.d("你好",et.getText().toString());
                // Connector.getDatabase();
-                Place place = new Place();
-                place.setPlace_name(et.getText().toString());
-                place.save();
-                startActivity(new Intent(add_surface.this,SceneActivity.class));
+               // Place place = new Place();
+               // place.setPlace_name(et.getText().toString());
+               // place.save();
+               // finish();
+                Intent intent = new Intent();
+                intent.setClass(add_surface.this,SceneActivity.class);
+                intent.putExtra("et",et.getText().toString());
+                setResult(2,intent);
+                finish();
+                //startActivity(new Intent(add_surface.this,SceneActivity.class));
+                //System.exit(0);
+
             }
         });
 
