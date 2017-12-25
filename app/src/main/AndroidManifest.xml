@@ -60,13 +60,17 @@
         <service android:name="dji.sdk.sdkmanager.DJIGlobalService"></service>
         <!-- DJI SDK -->
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ConnectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="小区天眼"
+            android:launchMode="standard"></activity>
         <activity
             android:name=".SceneActivity"
             android:label="@string/scene_activity"
@@ -78,10 +82,6 @@
         <activity
             android:name=".SubScene"
             android:label="@string/title_activity_sub_scene" />
-        <activity
-            android:name=".ConnectionActivity"
-            android:label="@string/title_activity_connection"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -2,6 +2,10 @@ package com.live.communityskyeye;
 
 import android.*;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +17,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import dji.sdk.base.BaseProduct;
+import dji.sdk.products.Aircraft;
 
 public class ConnectionActivity extends Activity implements View.OnClickListener {
     private static final String TAG = ConnectionActivity.class.getName();
@@ -40,7 +47,11 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
                     , 1);
         }
         setContentView(R.layout.activity_connection);
-
+        initUI();
+        // Register the broadcast receiver for receiving the device connection's changes.
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MyOwnApplication.FLAG_CONNECTION_CHANGE);
+        registerReceiver(mReceiver, filter);
     }
 
     @Override
@@ -74,10 +85,45 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         mBtnOpen.setOnClickListener(this);
         mBtnOpen.setEnabled(false);
     }
+
+    protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refreshSDKRelativeUI();
+        }
+    };
+
+    private void refreshSDKRelativeUI() {
+        BaseProduct mProduct =MyOwnApplication.getProductInstance();
+
+        if (null != mProduct && mProduct.isConnected()) {
+            Log.v(TAG, "refreshSDK: True");
+            mBtnOpen.setEnabled(true);
+
+            String str = mProduct instanceof Aircraft ? "DJIAircraft" : "DJIHandHeld";
+            mTextConnectionStatus.setText("Status: " + str + " connected");
+
+            if (null != mProduct.getModel()) {
+                mTextProduct.setText("" + mProduct.getModel().getDisplayName());
+            } else {
+                mTextProduct.setText(R.string.product_information);
+            }
+
+        } else {
+            Log.v(TAG, "refreshSDK: False");
+            mBtnOpen.setEnabled(false);
+
+            mTextProduct.setText(R.string.product_information);
+            mTextConnectionStatus.setText(R.string.connection_loose);
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_open: {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
             }
             default:
