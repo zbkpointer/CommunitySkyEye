@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //Enable multidex-support
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -28,5 +30,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'org.litepal.android:core:1.6.0'
     compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.dji:dji-sdk:4.3.2'
     testCompile 'junit:junit:4.12'
 }
