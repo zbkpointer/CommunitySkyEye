@@ -61,7 +61,7 @@
         android:layout_alignStart="@+id/tv_activation_state_info"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="79dp"
-        android:text="登陆" />
+        android:text="登录" />
 
     <Button
         android:id="@+id/btn_logout"

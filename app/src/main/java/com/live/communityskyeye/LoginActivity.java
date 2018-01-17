@@ -180,6 +180,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         switch (v.getId()) {
             case R.id.btn_login:{
+                //判断字符串组件中的字符是否包含ACTIVATED，如果是已激活，就直接跳转到主界面，
+                // 否则登录至大疆账号。
                 if(appActivationStateTV.getText().toString().contains("ACTIVATED"))
                 {
                     Intent intent = new Intent(this,MainActivity.class);
