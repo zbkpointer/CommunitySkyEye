@@ -140,7 +140,8 @@ public class MyOwnApplication extends Application {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Register Success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Register Success",
+                                Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -153,7 +154,8 @@ public class MyOwnApplication extends Application {
 
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Register sdk fails, check network is available", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Register sdk fails, check network is available",
+                                Toast.LENGTH_LONG).show();
                     }
                 });
 

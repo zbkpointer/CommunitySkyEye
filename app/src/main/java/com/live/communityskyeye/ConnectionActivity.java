@@ -17,22 +17,32 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import dji.common.error.DJIError;
+import dji.common.realname.AppActivationState;
+import dji.common.useraccount.UserAccountState;
+import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseProduct;
 import dji.sdk.products.Aircraft;
+import dji.sdk.realname.AppActivationManager;
+import dji.sdk.sdkmanager.DJISDKManager;
+import dji.sdk.useraccount.UserAccountManager;
 
 public class ConnectionActivity extends Activity implements View.OnClickListener {
     private static final String TAG = ConnectionActivity.class.getName();
+
     private TextView mTextConnectionStatus;
     private TextView mTextProduct;
-    private Button mBtnOpen;
+
+    private Button mBtnopen;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /*
-         When the compile and target version is higher than 22,
-         please request the following permission at runtime to
-         ensure the SDK works well.
+         当SDK版本超过22时，需要用一下代表确保大疆SDK运行良好
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ActivityCompat.requestPermissions(this,
@@ -48,10 +58,11 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
         }
         setContentView(R.layout.activity_connection);
         initUI();
-        // Register the broadcast receiver for receiving the device connection's changes.
+        //注册广播接收机接收飞行器接入状态的变化
         IntentFilter filter = new IntentFilter();
         filter.addAction(MyOwnApplication.FLAG_CONNECTION_CHANGE);
         registerReceiver(mReceiver, filter);
+
     }
 
     @Override
@@ -81,10 +92,13 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     private void initUI() {
         mTextConnectionStatus = (TextView) findViewById(R.id.text_connection_status);
         mTextProduct = (TextView) findViewById(R.id.text_product_info);
-        mBtnOpen = (Button) findViewById(R.id.btn_open);
-        mBtnOpen.setOnClickListener(this);
-        mBtnOpen.setEnabled(false);
+
+        mBtnopen = (Button)findViewById(R.id.btn_open);
+        mBtnopen.setOnClickListener(this);
+        mBtnopen.setEnabled(false);
     }
+
+
 
     protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
@@ -99,33 +113,34 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
 
         if (null != mProduct && mProduct.isConnected()) {
             Log.v(TAG, "refreshSDK: True");
-            mBtnOpen.setEnabled(true);
+            mBtnopen.setEnabled(true);
 
-            String str = mProduct instanceof Aircraft ? "DJIAircraft" : "DJIHandHeld";
-            mTextConnectionStatus.setText("Status: " + str + " connected");
+            String str = mProduct instanceof Aircraft ? "飞机":"手持产品";
+            mTextConnectionStatus.setText("状态: " + str + " 已连接");
 
             if (null != mProduct.getModel()) {
-                mTextProduct.setText("" + mProduct.getModel().getDisplayName());
+                mTextProduct.setText("飞机型号: " + mProduct.getModel().getDisplayName());
             } else {
                 mTextProduct.setText(R.string.product_information);
             }
 
         } else {
             Log.v(TAG, "refreshSDK: False");
-            mBtnOpen.setEnabled(false);
-
+            mBtnopen.setEnabled(false);
             mTextProduct.setText(R.string.product_information);
             mTextConnectionStatus.setText(R.string.connection_loose);
         }
     }
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_open: {
-                Intent intent = new Intent(this, MainActivity.class);
+            case R.id.btn_open:
+                Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;
-            }
             default:
                 break;
         }
