@@ -1,5 +1,8 @@
 package com.live.communityskyeye;
 
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,8 +34,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_main);
+        /*
+         当SDK版本超过22时，需要用一下代表确保大疆SDK运行良好
+         */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.VIBRATE,
+                            android.Manifest.permission.INTERNET, android.Manifest.permission.ACCESS_WIFI_STATE,
+                            android.Manifest.permission.WAKE_LOCK, android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            android.Manifest.permission.ACCESS_NETWORK_STATE, android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.CHANGE_WIFI_STATE, android.Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.SYSTEM_ALERT_WINDOW,
+                            android.Manifest.permission.READ_PHONE_STATE,
+                    }
+                    , 1);
+        }
+        setContentView(R.layout.activity_login);
 
         initUI();
         initData();
@@ -60,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onReturn(View view){
         Log.e(TAG, "onReturn");
+
         this.finish();
     }
 
@@ -162,7 +180,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         switch (v.getId()) {
             case R.id.btn_login:{
-                loginAccount();
+                if(appActivationStateTV.getText().toString().contains("ACTIVATED"))
+                {
+                    Intent intent = new Intent(this,MainActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    loginAccount();
+                }
+
                 break;
             }
             case R.id.btn_logout:{

@@ -8,7 +8,6 @@
     <string name="disconnected">Disconnected</string>
     <string name="product_information">飞机型号: 未检测到飞机</string>
     <string name="connection_loose">状态: 无连接</string>
-    <string name="app_activation_loose">App状态: 无激活</string>
     <string name="sdk_version">DJI SDK Version: 4.3.2</string>
     <string name="title_activity_login">LoginActivity</string>
 </resources>
