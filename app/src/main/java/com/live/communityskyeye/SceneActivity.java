@@ -122,6 +122,4 @@ public class  SceneActivity extends AppCompatActivity {
     }
 
 
-
-
 }

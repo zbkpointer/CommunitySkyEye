@@ -71,7 +71,8 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"></activity>
+            android:name=".LoginActivity"
+            android:label="注册与绑定"></activity>
         <activity
             android:name=".MainActivity"
             android:label="小区天眼"
