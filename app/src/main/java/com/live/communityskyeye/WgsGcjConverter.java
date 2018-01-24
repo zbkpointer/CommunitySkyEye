@@ -1,6 +1,5 @@
 package com.live.communityskyeye;
 
-import com.live.communityskyeye.SimpleCoodinates;
 
 public class WgsGcjConverter {
     public static final double SEMI_MAJOR_AXIS = 6378245.0;
