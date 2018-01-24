@@ -57,7 +57,7 @@ public class  SceneActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 intent.putExtra("sceneName", (String) listview.getItemAtPosition(position));
-                intent.setClass(SceneActivity.this, SubScene.class);
+                intent.setClass(SceneActivity.this, UIActivity.class);
                 startActivity(intent);
             }
         });

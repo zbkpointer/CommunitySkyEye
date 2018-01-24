@@ -45,6 +45,12 @@
             android:name="com.dji.sdk.API_KEY"
             android:value="aa2339312fece877dd0cf1aa" />
 
+        <!-- 启用高德地图服务 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="ab461579a98508a0fac9627ea73a967b" />
+        <!-- 启用高德地图服务 -->
+
         <activity
             android:name="dji.sdk.sdkmanager.DJIAoaControllerActivity"
             android:theme="@android:style/Theme.Translucent">
@@ -60,7 +66,9 @@
         <service android:name="dji.sdk.sdkmanager.DJIGlobalService" />
         <!-- DJI SDK -->
 
-        <activity android:name=".ConnectionActivity"
+
+        <activity
+            android:name=".ConnectionActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -69,10 +77,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
-            android:label="绑定与激活"></activity>
+            android:label="绑定与激活" />
         <activity
             android:name=".MainActivity"
             android:label="小区天眼"
@@ -88,7 +95,13 @@
         <activity
             android:name=".SubScene"
             android:screenOrientation="landscape" />
-
+        <activity
+            android:name=".UIActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WayPointActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

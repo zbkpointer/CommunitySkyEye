@@ -27,7 +27,7 @@ import dji.sdk.sdkmanager.DJISDKManager;
  */
 
 public class MyOwnApplication extends Application {
-    public static final String FLAG_CONNECTION_CHANGE = "fpv_tutorial_connection_change";
+    public static final String FLAG_CONNECTION_CHANGE = "aircraft_connection_change";
 
     private static BaseProduct mProduct;
 
@@ -217,4 +217,7 @@ public class MyOwnApplication extends Application {
             sendBroadcast(intent);
         }
     };
+
+
+
 }

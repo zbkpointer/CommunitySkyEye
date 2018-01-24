@@ -19,6 +19,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        doNotStrip "*/*/libdjivideo.so"
+        doNotStrip "*/*/libSDKRelativeJNI.so"
+        doNotStrip "*/*/libFlyForbid.so"
+        doNotStrip "*/*/libduml_vision_bokeh.so"
+        doNotStrip "*/*/libyuv2.so"
+        doNotStrip "*/*/libGroudStation.so"
+        doNotStrip "*/*/libFRCorkscrew.so"
+        doNotStrip "*/*/libUpgradeVerify.so"
+        doNotStrip "*/*/libFR.so"
+    }
 }
 
 dependencies {
@@ -32,5 +43,7 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.dji:dji-sdk:4.3.2'
+    compile 'com.dji:dji-uilibrary:4.3.2'
     testCompile 'junit:junit:4.12'
+    compile files('libs/AMap2DMap_5.2.0_AMapSearch_5.7.0_20171229.jar')
 }

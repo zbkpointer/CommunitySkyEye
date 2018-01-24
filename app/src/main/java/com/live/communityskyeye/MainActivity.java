@@ -20,5 +20,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,SceneActivity.class));
             }
         });
+        findViewById(R.id.optimizing_mode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //启动航点选择活动
+                startActivity(new Intent(MainActivity.this,WayPointActivity.class));
+            }
+        });
     }
 }

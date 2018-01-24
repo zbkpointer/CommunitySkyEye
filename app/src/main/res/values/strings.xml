@@ -10,4 +10,6 @@
     <string name="connection_loose">状态: 无连接</string>
     <string name="sdk_version">DJI SDK Version: 4.3.2</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_ui">UIActivity</string>
+    <string name="title_activity_way_point">WayPointActivity</string>
 </resources>
