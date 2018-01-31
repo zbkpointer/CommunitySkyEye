@@ -12,4 +12,11 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_ui">UIActivity</string>
     <string name="title_activity_way_point">WayPointActivity</string>
+
+    <string name="add">添加</string>
+
+    <string name="query">查询</string>
+
+    <string name="click">请点右上角，然后点击ListView</string>
+    <string name="title_activity_place">PlaceActivity</string>
 </resources>

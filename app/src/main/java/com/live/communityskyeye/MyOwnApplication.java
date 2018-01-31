@@ -1,8 +1,10 @@
 package com.live.communityskyeye;
 
 import android.app.Application;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,7 +32,9 @@ public class MyOwnApplication extends Application {
     public static final String FLAG_CONNECTION_CHANGE = "aircraft_connection_change";
 
     private static BaseProduct mProduct;
-
+    private MySQLite mMySQLite;
+    private SQLiteDatabase mDbWriter;
+    private SQLiteDatabase mDbReader;
     public Handler mHandler;
 
     /**
@@ -86,6 +90,9 @@ public class MyOwnApplication extends Application {
             //将value写入对应的key，而且是一一对应的
             editor.commit();
             //将isFirstRun写入editor中保存
+
+
+
             Connector.getDatabase();
             Place place1 = new Place();
             place1.setPlace_name("小区围墙");

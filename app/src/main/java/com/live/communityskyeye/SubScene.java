@@ -54,6 +54,7 @@ public class SubScene extends AppCompatActivity implements TextureView.SurfaceTe
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sub_scene);
+
         Intent intent = getIntent();
         setTitle(intent.getStringExtra("sceneName"));
 

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -30,6 +31,8 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.Polyline;
+import com.amap.api.maps2d.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,16 +59,15 @@ import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 import dji.sdk.useraccount.UserAccountManager;
 
+
 public class WayPointActivity extends FragmentActivity implements View.OnClickListener, OnMapClickListener {
 
     protected static final String TAG = "WayPointActivity";
-  //  private final double PI = 3.1415926535897932384626;
-  //  private final double ee = 0.00669342162296594323;
-   // private final double a = 6378245.0;
-
 
     private MapView mapView;
     private AMap aMap;
+    private Polyline polyline;
+    private List<LatLng> LatLngs = new ArrayList<LatLng>();
 
     private Button locate, add, clear;
     private Button config, upload, start, stop;
@@ -77,8 +79,10 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     private final Map<Integer, Marker> mMarkers = new ConcurrentHashMap<Integer, Marker>();
     private Marker droneMarker = null;
 
-    private float altitude = 100.0f;
+    private float  altitude = 100.0f;
     private float mSpeed = 10.0f;
+
+    private int number = 0;
 
     private List<Waypoint> waypointList = new ArrayList<>();
 
@@ -91,12 +95,14 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     @Override
     protected void onResume(){
         super.onResume();
+        mapView.onResume();
         initFlightController();
     }
 
     @Override
     protected void onPause(){
         super.onPause();
+        mapView.onPause();
     }
 
     @Override
@@ -104,6 +110,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         unregisterReceiver(mReceiver);
         removeListener();
         super.onDestroy();
+        mapView.onDestroy();
     }
 
     /**
@@ -150,9 +157,12 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
             aMap.setOnMapClickListener(this);// add the listener for click for amap object
         }
 
-        LatLng shenzhen = new LatLng(22.5362, 113.9454);
-        aMap.addMarker(new MarkerOptions().position(shenzhen).title("Marker in Shenzhen"));
-        aMap.moveCamera(CameraUpdateFactory.newLatLng(shenzhen));
+        LatLng wuhan = new LatLng(30.518519,114.399421);
+        aMap.addMarker(new MarkerOptions()
+                .position(wuhan)
+                .title("Hi>>>")
+                .snippet("欢迎使用自由航点设置管理系统")).showInfoWindow();
+        aMap.moveCamera(CameraUpdateFactory.newLatLng(wuhan));
     }
 
     @Override
@@ -185,25 +195,8 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     private void onProductConnectionChange()
     {
         initFlightController();
-//        loginAccount();
     }
-//前面已经登录过账号
- /*   private void loginAccount(){
 
-        UserAccountManager.getInstance().logIntoDJIUserAccount(this,
-                new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
-                    @Override
-                    public void onSuccess(final UserAccountState userAccountState) {
-                        Log.e(TAG, "Login Success");
-                    }
-                    @Override
-                    public void onFailure(DJIError error) {
-                        setResultToToast("Login Error:"
-                                + error.getDescription());
-                    }
-                });
-    }
-*/
     private void initFlightController() {
 
         BaseProduct product = MyOwnApplication.getProductInstance();
@@ -285,8 +278,15 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     @Override
     public void onMapClick(LatLng point) {
         if (isAdd == true){
-            markWaypoint(point);
-            Waypoint mWaypoint = new Waypoint(point.latitude, point.longitude, altitude);
+            //添加title作为显示标记点数字顺序
+            number+=1;
+            markWaypoint(point,Integer.toString(number));
+            LatLngs.add(point);
+            //转换坐标系
+            //因为高德使用的是火星坐标系，
+            //所以需要进行火星坐标转换WGS84坐标，才能对应
+            SimpleCoodinates pos2 = WgsGcjConverter.gcj02ToWgs84(point.latitude,point.longitude);
+            Waypoint mWaypoint = new Waypoint(pos2.getLat(), pos2.getLon(), altitude);
             //Add Waypoints to Waypoint arraylist;
             if (waypointMissionBuilder != null) {
                 waypointList.add(mWaypoint);
@@ -300,6 +300,17 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         }else{
             setResultToToast("Cannot Add Waypoint");
         }
+        //绘制航线
+        //Toast.makeText(WayPointActivity.this,LatLngs,Toast.LENGTH_SHORT).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                aMap.addPolyline(new PolylineOptions().addAll(LatLngs).width(10).color(Color.argb(255,0,255,0)));
+            }
+        });
+
+
+
     }
 
     public static boolean checkGpsCoordination(double latitude, double longitude) {
@@ -314,6 +325,8 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     private void updateDroneLocation(){
 
         LatLng pos = new LatLng(droneLocationLat1,droneLocationLng1);
+        //添加轨迹标记点
+        LatLngs.add(pos);
         //Create MarkerOptions object
         final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(pos);
@@ -333,12 +346,15 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         });
     }
 
-    private void markWaypoint(LatLng point){
+    private void markWaypoint(LatLng point,String counter){
         //Create MarkerOptions object
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(point);
+        markerOptions.title(counter);
+        markerOptions.snippet("标记");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         Marker marker = aMap.addMarker(markerOptions);
+        marker.showInfoWindow();
         mMarkers.put(mMarkers.size(), marker);
     }
 
@@ -346,6 +362,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.locate:{
+                aMap.clear();
                 updateDroneLocation();
                 cameraUpdate(); // Locate the drone's place
                 break;
@@ -359,10 +376,12 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                     @Override
                     public void run() {
                         aMap.clear();
+                        number = 0;
                     }
 
                 });
                 waypointList.clear();
+                LatLngs.clear();
                 waypointMissionBuilder.waypointList(waypointList);
                 updateDroneLocation();
                 break;
