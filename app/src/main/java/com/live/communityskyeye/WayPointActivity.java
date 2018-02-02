@@ -9,12 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -48,9 +50,12 @@ import dji.common.mission.waypoint.WaypointMissionFinishedAction;
 import dji.common.mission.waypoint.WaypointMissionFlightPathMode;
 import dji.common.mission.waypoint.WaypointMissionHeadingMode;
 import dji.common.mission.waypoint.WaypointMissionUploadEvent;
+import dji.common.product.Model;
 import dji.common.useraccount.UserAccountState;
 import dji.common.util.CommonCallbacks;
 import dji.sdk.base.BaseProduct;
+import dji.sdk.camera.VideoFeeder;
+import dji.sdk.codec.DJICodecManager;
 import dji.sdk.flightcontroller.FlightController;
 import dji.common.error.DJIError;
 import dji.sdk.mission.waypoint.WaypointMissionOperator;
@@ -69,6 +74,8 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     private Polyline polyline;
     private List<LatLng> LatLngs = new ArrayList<LatLng>();
 
+    private List<LatLng> LatLngs_drone = new ArrayList<LatLng>();
+
     private Button locate, add, clear;
     private Button config, upload, start, stop;
 
@@ -86,6 +93,12 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
 
     private List<Waypoint> waypointList = new ArrayList<>();
 
+    // 实时视频流的编解码
+    protected DJICodecManager mCodecManager = null;
+    protected TextureView mVideoSurface = null;
+    protected VideoFeeder.VideoDataCallback mReceivedVideoDataCallBack = null;
+
+    //航点规划
     public static WaypointMission.Builder waypointMissionBuilder;
     private FlightController mFlightController;
     private WaypointMissionOperator instance;
@@ -97,6 +110,13 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         super.onResume();
         mapView.onResume();
         initFlightController();
+        /*
+        onProductChange();
+        if (mVideoSurface == null) {
+            Log.e(TAG, "mVideoSurface is null");
+        }
+        */
+
     }
 
     @Override
@@ -132,6 +152,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
 
     private void initUI() {
 
+
         locate = (Button) findViewById(R.id.locate);
         add = (Button) findViewById(R.id.add);
         clear = (Button) findViewById(R.id.clear);
@@ -165,6 +186,19 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         aMap.moveCamera(CameraUpdateFactory.newLatLng(wuhan));
     }
 
+    /*
+
+    private void initVideoView(){
+        //初始化视频流界面
+        mVideoSurface = (TextureView) findViewById(R.id.video_from_camera);
+        if (null != mVideoSurface) {
+            mVideoSurface.setSurfaceTextureListener(this);
+        }
+
+    }
+*/
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,6 +215,19 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         initMapView();
         initUI();
         addListener();
+        /*
+        initVideoView();
+        //用于接收相机实时取景的原始H264视频数据的回调
+        mReceivedVideoDataCallBack = new VideoFeeder.VideoDataCallback() {
+
+            @Override
+            public void onReceive(byte[] videoBuffer, int size) {
+                if (mCodecManager != null) {
+                    mCodecManager.sendDataToDecoder(videoBuffer, size);
+                }
+            }
+        };
+*/
 
     }
 
@@ -221,7 +268,15 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                             SimpleCoodinates pos1 = WgsGcjConverter.wgs84ToGcj02(droneLocationLat, droneLocationLng);
                             droneLocationLat1 = pos1.getLat();
                             droneLocationLng1 = pos1.getLon();
+                       //     LatLngs_drone.add(pos1);
                             updateDroneLocation();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    aMap.addPolyline(new PolylineOptions().addAll(LatLngs_drone).width(10).color(Color.argb(255,0,0,255)));
+                                }
+                            });
+
                         }
                     });
 
@@ -297,17 +352,18 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                 waypointList.add(mWaypoint);
                 waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
             }
-        }else{
+            }else{
             setResultToToast("Cannot Add Waypoint");
-        }
-        //绘制航线
-        //Toast.makeText(WayPointActivity.this,LatLngs,Toast.LENGTH_SHORT).show();
-        runOnUiThread(new Runnable() {
+            }
+            //绘制航线
+            runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                aMap.addPolyline(new PolylineOptions().addAll(LatLngs).width(10).color(Color.argb(255,0,255,0)));
+
+                    aMap.addPolyline(new PolylineOptions().addAll(LatLngs).width(10).color(Color.argb(255,0,255,0)));
+
             }
-        });
+            });
 
 
 
@@ -325,9 +381,9 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     private void updateDroneLocation(){
 
         LatLng pos = new LatLng(droneLocationLat1,droneLocationLng1);
-        //添加轨迹标记点
-        LatLngs.add(pos);
-        //Create MarkerOptions object
+        LatLngs_drone.add(pos);
+        // LatLngs.add(pos);  !!!坐标更新频次为10Hz,所以第一个点标记不能放在这
+        //创建飞机标记点
         final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(pos);
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.aircraft));
@@ -381,6 +437,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
 
                 });
                 waypointList.clear();
+                LatLngs_drone.clear();
                 LatLngs.clear();
                 waypointMissionBuilder.waypointList(waypointList);
                 updateDroneLocation();
@@ -598,5 +655,56 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         });
 
     }
+
+/*
+
+   //大疆相机视频流在textview中显示
+    @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        Log.e(TAG, "onSurfaceTextureAvailable");//准备就绪
+        if (mCodecManager == null) {
+            mCodecManager = new DJICodecManager(this, surface, width, height);
+        }
+    }
+
+    @Override
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+        Log.e(TAG, "onSurfaceTextureSizeChanged");//缓冲大小变化
+    }
+
+    @Override
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        Log.e(TAG, "onSurfaceTextureDestroyed");//
+        if (mCodecManager != null) {
+            mCodecManager.cleanSurface();
+            mCodecManager = null;
+        }
+        return false;
+    }
+
+    @Override
+    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+        Log.e(TAG, "onSurfaceTextureUpdated");
+    }
+
+    protected void onProductChange() {
+        initPreviewer();
+    }
+
+    public void initPreviewer() {
+        BaseProduct product = MyOwnApplication.getProductInstance();
+        if (product == null || product.isConnected()) {
+            Toast.makeText(WayPointActivity.this, "无连接", Toast.LENGTH_SHORT).show();
+        } else {
+            if (mVideoSurface != null) {
+                mVideoSurface.setSurfaceTextureListener(this);
+            }
+            if (product.getModel().equals(Model.UNKNOWN_AIRCRAFT)) {
+                VideoFeeder.getInstance().getPrimaryVideoFeed().setCallback(mReceivedVideoDataCallBack);
+            }
+        }
+    }
+*/
+
 
 }
