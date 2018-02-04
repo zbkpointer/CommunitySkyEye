@@ -91,8 +91,19 @@ public class MyOwnApplication extends Application {
             editor.commit();
             //将isFirstRun写入editor中保存
 
+            String[] scene_set = new String[]{"小区围墙","绿化","停车场","屋顶","行车道"};
+
+            MySQLite db = new MySQLite(this);
+            ContentValues  values= new ContentValues();
 
 
+            for (String scene:scene_set) {
+                values.put("songname", scene.trim());
+                db.getWritableDatabase().insert("music_msg", null, values);
+                values.clear();
+
+            }
+/*
             Connector.getDatabase();
             Place place1 = new Place();
             place1.setPlace_name("小区围墙");
@@ -115,7 +126,7 @@ public class MyOwnApplication extends Application {
             Place place5 = new Place();
             place5.setPlace_name("行车道");
             place5.save();
-
+*/
         }
         mHandler = new Handler(Looper.getMainLooper());
 

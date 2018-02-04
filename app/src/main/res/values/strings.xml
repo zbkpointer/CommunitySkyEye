@@ -19,4 +19,5 @@
 
     <string name="click">请点右上角，然后点击ListView</string>
     <string name="title_activity_place">PlaceActivity</string>
+    <string name="title_activity_sub_place">SubPlaceActivity</string>
 </resources>

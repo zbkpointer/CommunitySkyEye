@@ -14,7 +14,9 @@
     <dji.ui.widget.FPVOverlayWidget
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/PreflightCheckView"
+        android:layout_marginBottom="21dp" />
     <!--2-->
     <!-- Widgets in top status bar -->
     <LinearLayout
@@ -103,14 +105,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/PreflightCheckView">
         <dji.ui.widget.dashboard.DashboardWidget
             android:id="@+id/Compass"
             android:layout_width="405dp"
             android:layout_height="91dp"
             android:layout_marginRight="12dp"/>
+
+        <Button
+            android:id="@+id/start_record_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/camera"
+            android:layout_marginEnd="42dp"
+            android:layout_weight="1"
+            android:text="开始记录" />
+
+        <Button
+            android:id="@+id/load_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/CameraExposureMode"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="29dp"
+            android:layout_weight="1"
+            android:text="下载" />
+
     </LinearLayout>
     <!--6-->
     <!--Take off and return home buttons on left -->
@@ -155,7 +179,9 @@
         android:layout_toLeftOf="@+id/CameraCapturePanel"
         android:background="@color/transparent"
         android:gravity="center"
-        android:visibility="invisible"/>
+        android:visibility="invisible">
+
+    </dji.ui.panel.CameraSettingAdvancedPanel>
     <!--10-->
     <!-- Pre-flight checklist panel -->
     <dji.ui.panel.PreFlightCheckListPanel
@@ -164,4 +190,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/signal"
         android:visibility="gone"/>
+
 </RelativeLayout>

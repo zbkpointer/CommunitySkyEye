@@ -69,29 +69,29 @@
         <activity
             android:name=".ConnectionActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" >
-
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".LoginActivity"
-            android:label="绑定与激活" />
-        <activity
-            android:name=".MainActivity"
-            android:label="小区天眼"/>
+            android:screenOrientation="portrait">
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
-        -->
+        <activity
+            android:name=".LoginActivity"
+            android:label="绑定与激活" />
+        <activity
+            android:name=".MainActivity"
+            android:label="小区天眼" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".SceneActivity"
             android:label="@string/scene_activity"
@@ -112,6 +112,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".PlaceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SubPlaceActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

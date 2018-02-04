@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -104,6 +105,10 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     private WaypointMissionOperator instance;
     private WaypointMissionFinishedAction mFinishedAction = WaypointMissionFinishedAction.NO_ACTION;
     private WaypointMissionHeadingMode mHeadingMode = WaypointMissionHeadingMode.AUTO;
+
+    //取数据
+    private Handler mHandler;
+  //  private Runnable mRunnable;
 
     @Override
     protected void onResume(){
@@ -215,6 +220,27 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         initMapView();
         initUI();
         addListener();
+
+        mHandler = new Handler();
+
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                LatLngs_drone.add(new LatLng(droneLocationLat1,droneLocationLng1));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        aMap.addPolyline(new PolylineOptions().addAll(LatLngs_drone).width(12).color(Color.argb(255,128,128,128)));
+                    }
+                });
+
+                mHandler.postDelayed(this,500);
+
+            }
+        });
+
+
         /*
         initVideoView();
         //用于接收相机实时取景的原始H264视频数据的回调
@@ -270,13 +296,15 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                             droneLocationLng1 = pos1.getLon();
                        //     LatLngs_drone.add(pos1);
                             updateDroneLocation();
+
+                            /*
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     aMap.addPolyline(new PolylineOptions().addAll(LatLngs_drone).width(10).color(Color.argb(255,0,0,255)));
                                 }
                             });
-
+                            */
                         }
                     });
 
@@ -381,7 +409,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     private void updateDroneLocation(){
 
         LatLng pos = new LatLng(droneLocationLat1,droneLocationLng1);
-        LatLngs_drone.add(pos);
+     //   LatLngs_drone.add(pos);
         // LatLngs.add(pos);  !!!坐标更新频次为10Hz,所以第一个点标记不能放在这
         //创建飞机标记点
         final MarkerOptions markerOptions = new MarkerOptions();
@@ -401,6 +429,13 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
             }
         });
     }
+
+    private void getLatLogData(){
+
+
+    }
+
+
 
     private void markWaypoint(LatLng point,String counter){
         //Create MarkerOptions object
@@ -597,7 +632,6 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                     .autoFlightSpeed(mSpeed)
                     .maxFlightSpeed(mSpeed)
                     .flightPathMode(WaypointMissionFlightPathMode.NORMAL);
-
         }
 
         if (waypointMissionBuilder.getWaypointList().size() > 0){

@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -54,10 +55,6 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +67,18 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, final int position, long l) {
-                Intent intent = new Intent(PlaceActivity.this,UIActivity.class);
+
+                //通过游标选择点击的内容
+                Cursor mCursor = mSimpleCursorAdapter.getCursor();
+                mCursor.moveToPosition(position);
+                String placeName = mCursor.getString(mCursor.getColumnIndex("songname"));
+
+                Intent intent = new Intent();
+
+                intent.putExtra("placeName",placeName);
+                intent.setClass(PlaceActivity.this,SubPlaceActivity.class);
                 startActivity(intent);
+
             }
         });
 
@@ -152,7 +159,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
     public void insertData() {
         ContentValues mContentValues = new ContentValues();
         mContentValues.put("songname", mEt_songName.getText().toString().trim());
-        mContentValues.put("singer", this.getTime().trim());
+        //  mContentValues.put("singer", this.getTime().trim());
         //   mContentValues.put("singer", mEt_singer.getText().toString().trim());
         mDbWriter.insert("music_msg", null, mContentValues);
         refreshListview();
