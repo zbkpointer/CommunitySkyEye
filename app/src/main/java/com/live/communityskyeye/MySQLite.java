@@ -21,6 +21,7 @@ class MySQLite extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("create table music_msg(_id integer primary key autoincrement, singer varchar, songname varchar, url varchar)");
+        sqLiteDatabase.execSQL("create table sub_place(_id integer primary key autoincrement, _placeName varchar, _placeDate varchar)");
     }
 
     @Override

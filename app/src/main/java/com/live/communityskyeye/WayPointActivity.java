@@ -235,7 +235,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                     }
                 });
 
-                mHandler.postDelayed(this,500);
+                mHandler.postDelayed(this,2000);
 
             }
         });

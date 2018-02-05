@@ -2,9 +2,11 @@ package com.live.communityskyeye;
 
 import android.animation.TimeAnimator;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,12 +20,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import dji.common.flightcontroller.FlightControllerState;
@@ -43,6 +48,13 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
     private List<LatLng> latLngs = new ArrayList<>();
 
     private Handler mhandler;
+
+    private MySQLite mySQLite;
+    private SQLiteDatabase mDbWriter;
+
+    private String nameFlag;
+    String[] scene_set = new String[]{"小区围墙","绿化","停车场","屋顶","行车道"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +84,15 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
         filter.addAction(MyOwnApplication.FLAG_CONNECTION_CHANGE);
         registerReceiver(mReceiver, filter);
 
+        Intent intent = getIntent();
+
+        nameFlag = intent.getStringExtra("subPlaceName");
+
         initView();
 
         //进行判断选择按钮
-        if(isRecord ==true) {
-
-            mhandler = new Handler();
-            mhandler.post(new Runnable() {
+        mhandler = new Handler();
+     /*   mhandler.post(new Runnable() {
                 @Override
                 public void run() {
 
@@ -86,7 +100,20 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
 
                 }
             });
+         */
+
+    }
+    protected void onResume(){
+        super.onResume();
+        initFlightController();
+
+        /*
+        onProductChange();
+        if (mVideoSurface == null) {
+            Log.e(TAG, "mVideoSurface is null");
         }
+        */
+
     }
 
     protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -142,17 +169,7 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
         }
     }
 
-    protected void onResume(){
-        super.onResume();
-        initFlightController();
-        /*
-        onProductChange();
-        if (mVideoSurface == null) {
-            Log.e(TAG, "mVideoSurface is null");
-        }
-        */
 
-    }
 
     private void initView(){
         startRecord = (Button)findViewById(R.id.start_record_button);
@@ -160,6 +177,10 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
 
         startRecord.setOnClickListener(this);
         load.setOnClickListener(this);
+
+
+        mySQLite = new MySQLite(this);
+        mDbWriter = mySQLite.getWritableDatabase();
     }
 
     private void enableDisableRecord(){
@@ -175,12 +196,58 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
         }
     }
 
+
+
+    //增
+    public void insertData() {
+        ContentValues mContentValues = new ContentValues();
+
+
+        mContentValues.put("_placeName",nameFlag.trim());
+        mContentValues.put("_placeDate", this.getTime().trim());
+
+
+        //  mContentValues.put("singer", this.getTime().trim());
+        //   mContentValues.put("singer", mEt_singer.getText().toString().trim());
+        mDbWriter.insert("sub_place", null, mContentValues);
+        mContentValues.clear();
+
+    }
+
+    private String getTime(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss ");
+
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+
+        String str = formatter.format(curDate);
+
+        return str;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
 
             case R.id.start_record_button:{
                 enableDisableRecord();
+                if(isRecord==true){
+                    insertData();
+                }
+                mhandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(isRecord==true) {
+
+                                load.setText(Double.toString(droneLocationLat));
+                                Toast.makeText(UIActivity.this, "成功", Toast.LENGTH_SHORT).show();
+                                mhandler.postDelayed(this, 4000);//延时1分钟进行取点
+                            }else {
+                                System.out.println("结束");
+                            }
+                        }
+                    });
+
+
                 break;
             }
 
@@ -191,5 +258,9 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
         }
 
     }
+
+
+
+
 
 }

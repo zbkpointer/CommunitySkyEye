@@ -36,6 +36,7 @@ public class MyOwnApplication extends Application {
     private SQLiteDatabase mDbWriter;
     private SQLiteDatabase mDbReader;
     public Handler mHandler;
+    public MySQLite db = new MySQLite(this);
 
     /**
      * This function is used to get the instance of DJIBaseProduct.
