@@ -57,6 +57,29 @@ public class SubPlaceActivity extends AppCompatActivity implements View.OnClickL
         initView();
         initEvent();
 
+        //单击修改item
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, final View view, final int position, long l) {
+
+                //通过游标选择点击的内容
+                Cursor mCursor = mSimpleCursorAdapter.getCursor();
+                mCursor.moveToPosition(position);
+                long startTime = mCursor.getLong(mCursor.getColumnIndex("_startTime"));
+                System.out.println(startTime);
+                long endTime = mCursor.getLong(mCursor.getColumnIndex("_endTime"));
+                System.out.println(endTime);
+
+             //   Intent intent = new Intent();
+                //不同活动之间传递数值
+            //    intent.putExtra("startTime",startTime);
+            //    intent.putExtra("endTime",endTime);
+            //    intent.setClass(SubPlaceActivity.this,SubPlaceActivity.class);
+            //    startActivity(intent);
+
+            }
+        });
+
         //长按删除item
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -101,6 +124,8 @@ public class SubPlaceActivity extends AppCompatActivity implements View.OnClickL
 
         mDbWriter = mySQLite.getWritableDatabase();
         mDbReader = mySQLite.getReadableDatabase();
+     //   Cursor mCursor = mDbWriter.query("sub_place", null, null, null, null, null, null);
+      //  System.out.println(mCursor.getLong(mCursor.getColumnIndex("_startTime")));
 
         mSimpleCursorAdapter = new SimpleCursorAdapter(SubPlaceActivity.this, R.layout.listview_sql_item, null,
                 new String[]{"_placeName", "_placeDate"}, new int[]{R.id.songname, R.id.singer}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);

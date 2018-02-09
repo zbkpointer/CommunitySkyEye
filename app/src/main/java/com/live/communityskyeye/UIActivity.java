@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
@@ -16,6 +17,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,6 +40,8 @@ import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
 
 public class UIActivity extends AppCompatActivity implements  View.OnClickListener{
+
+    private String TAG = "UIActivity";
     private Button startRecord;
     private Button load;
     private boolean isRecord = false;
@@ -53,6 +58,10 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
     private SQLiteDatabase mDbWriter;
 
     private String nameFlag;
+
+
+
+
     String[] scene_set = new String[]{"小区围墙","绿化","停车场","屋顶","行车道"};
 
 
@@ -103,8 +112,17 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
          */
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart");
+    }
+
+    @Override
     protected void onResume(){
         super.onResume();
+        Log.d(TAG,"onResume");
         initFlightController();
 
         /*
@@ -114,6 +132,36 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
         }
         */
 
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG,"onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG,"onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"onDestroy");
+    }
+    //重写按键返回事件
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+            startActivity(new Intent(UIActivity.this,SubPlaceActivity.class));
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -202,11 +250,10 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
     public void insertData() {
         ContentValues mContentValues = new ContentValues();
 
-
         mContentValues.put("_placeName",nameFlag.trim());
         mContentValues.put("_placeDate", this.getTime().trim());
-
-
+        mContentValues.put("_startTime", System.currentTimeMillis());
+        mContentValues.put("_endTime",0);
         //  mContentValues.put("singer", this.getTime().trim());
         //   mContentValues.put("singer", mEt_singer.getText().toString().trim());
         mDbWriter.insert("sub_place", null, mContentValues);
@@ -237,11 +284,20 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
                         @Override
                         public void run() {
                             if(isRecord==true) {
-
-                                load.setText(Double.toString(droneLocationLat));
+                                ContentValues mContentValues = new ContentValues();
+                                mContentValues.put("_Lag",34.5555666d);
+                                mContentValues.put("_Log",132.6667777d);
+                                mContentValues.put("_Time",System.currentTimeMillis());
+                                mDbWriter.insert("Lag_Log",null,mContentValues);
+                                mContentValues.clear();
+                               // load.setText(Double.toString(droneLocationLat));
                                 Toast.makeText(UIActivity.this, "成功", Toast.LENGTH_SHORT).show();
-                                mhandler.postDelayed(this, 4000);//延时1分钟进行取点
+                                mhandler.postDelayed(this, 6000);//延时1分钟进行取点
                             }else {
+                                ContentValues mContentValues = new ContentValues();
+                                mContentValues.put("_endTime",System.currentTimeMillis());
+                                mDbWriter.update("sub_place", mContentValues, "_endTime=?", new String[]{"0"});
+                                mContentValues.clear();
                                 System.out.println("结束");
                             }
                         }
@@ -250,7 +306,6 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
 
                 break;
             }
-
 
 
             default:
