@@ -151,6 +151,7 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG,"onDestroy");
+        mySQLite.close();
     }
     //重写按键返回事件
     @Override
@@ -158,7 +159,9 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
 
         if(keyCode == KeyEvent.KEYCODE_BACK) {
             this.finish();
-            startActivity(new Intent(UIActivity.this,SubPlaceActivity.class));
+
+        //    mDbWriter.close();
+          //  startActivity(new Intent(UIActivity.this,SubPlaceActivity.class));
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -285,10 +288,11 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
                         public void run() {
                             if(isRecord==true) {
                                 ContentValues mContentValues = new ContentValues();
-                                mContentValues.put("_Lag",34.5555666d);
-                                mContentValues.put("_Log",132.6667777d);
+                                mContentValues.put("_Lag",String.valueOf(34.5555666));
+                                mContentValues.put("_Log",String.valueOf(132.6667777));
                                 mContentValues.put("_Time",System.currentTimeMillis());
                                 mDbWriter.insert("Lag_Log",null,mContentValues);
+                                System.out.println(mContentValues.getAsString("_Time"));
                                 mContentValues.clear();
                                // load.setText(Double.toString(droneLocationLat));
                                 Toast.makeText(UIActivity.this, "成功", Toast.LENGTH_SHORT).show();

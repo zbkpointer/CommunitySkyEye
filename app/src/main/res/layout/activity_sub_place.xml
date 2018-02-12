@@ -34,61 +34,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
-    <LinearLayout
-        android:id="@+id/insert_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/query_layout"
-        android:layout_alignParentStart="true">
-
-        <EditText
-            android:id="@+id/et_songname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_weight="2.76"
-            android:gravity="center"
-            android:hint="请输入地点" />
-
-        <EditText
-            android:id="@+id/et_singer"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:hint="代替"
-            android:layout_weight="0.14" />
-
-        <Button
-            android:id="@+id/btn_insert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="新建"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/query_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
-
-        <EditText
-            android:id="@+id/et_query"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_weight="1.68"
-            android:gravity="center"
-            android:hint="请输入查询地点" />
-
-        <Button
-            android:id="@+id/btn_query"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:text="@string/query" />
-    </LinearLayout>
-
     <Button
         android:id="@+id/fly_button"
         android:layout_width="wrap_content"

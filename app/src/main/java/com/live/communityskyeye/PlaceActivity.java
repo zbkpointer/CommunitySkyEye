@@ -121,6 +121,12 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
 */
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMySQLite.close();
+    }
+
     private void initView() {
      //   mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mListView = (ListView) findViewById(R.id.myListview);

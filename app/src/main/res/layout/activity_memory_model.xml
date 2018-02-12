@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFFFF"
-    tools:context="com.live.communityskyeye.memoryModelActivity">
+    tools:context="com.live.communityskyeye.MemoryModelActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,7 +84,7 @@
         android:orientation="horizontal">
 
         <com.amap.api.maps2d.MapView
-            android:id="@+id/map"
+            android:id="@+id/Amap"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
