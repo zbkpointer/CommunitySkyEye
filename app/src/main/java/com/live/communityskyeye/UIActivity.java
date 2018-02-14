@@ -48,6 +48,7 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
 
     private double droneLocationLat = 181, droneLocationLng = 181;
     private double droneLocationLat1 = 0, droneLocationLng1 = 0;
+    private float droneAltitude = 0;
     private FlightController mFlightController;
 
     private List<LatLng> latLngs = new ArrayList<>();
@@ -161,7 +162,7 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
             this.finish();
 
         //    mDbWriter.close();
-          //  startActivity(new Intent(UIActivity.this,SubPlaceActivity.class));
+           startActivity(new Intent(UIActivity.this,SubPlaceActivity.class));
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -198,6 +199,8 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
                                                      djiFlightControllerCurrentState) {
                             droneLocationLat = djiFlightControllerCurrentState.getAircraftLocation().getLatitude();
                             droneLocationLng = djiFlightControllerCurrentState.getAircraftLocation().getLongitude();
+                            droneAltitude = djiFlightControllerCurrentState.getAircraftLocation().getAltitude();
+
                             //转换坐标系
                             //因为高德使用的是火星坐标系，
                             //所以需要进行原始坐标转换火星坐标，才能对应
@@ -224,10 +227,10 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
 
     private void initView(){
         startRecord = (Button)findViewById(R.id.start_record_button);
-        load = (Button)findViewById(R.id.load_button);
+   //     load = (Button)findViewById(R.id.load_button);
 
         startRecord.setOnClickListener(this);
-        load.setOnClickListener(this);
+    //    load.setOnClickListener(this);
 
 
         mySQLite = new MySQLite(this);
@@ -288,8 +291,9 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
                         public void run() {
                             if(isRecord==true) {
                                 ContentValues mContentValues = new ContentValues();
-                                mContentValues.put("_Lag",String.valueOf(34.5555666));
-                                mContentValues.put("_Log",String.valueOf(132.6667777));
+                                mContentValues.put("_Lag",String.valueOf(30.596745));
+                                mContentValues.put("_Log",String.valueOf(114.303365));
+                                mContentValues.put("_Alt",String.valueOf(6.66));
                                 mContentValues.put("_Time",System.currentTimeMillis());
                                 mDbWriter.insert("Lag_Log",null,mContentValues);
                                 System.out.println(mContentValues.getAsString("_Time"));

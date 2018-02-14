@@ -6,47 +6,7 @@
     android:background="#FFFFFF"
     tools:context="com.live.communityskyeye.MemoryModelActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="1">
 
-        <TextView
-            android:id="@+id/ConnectStatusTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="记忆模式"
-            android:textColor="#000000"
-            android:textSize="21sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/locate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="定位"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="添加"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/clear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="清除"
-            android:layout_weight="1"/>
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -116,7 +116,8 @@
             android:name=".SubPlaceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MemoryModelActivity" />
+            android:name=".MemoryModelActivity"
+            android:label="记忆模式"/>
     </application>
 
 </manifest>
