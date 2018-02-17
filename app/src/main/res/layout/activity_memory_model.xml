@@ -12,27 +12,27 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/config"
+            android:id="@+id/_config"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="配置"
             android:layout_weight="0.9"/>
 
         <Button
-            android:id="@+id/upload"
+            android:id="@+id/_upload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.9"
             android:text="上传" />
 
         <Button
-            android:id="@+id/start"
+            android:id="@+id/_start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="开始"
             android:layout_weight="1"/>
         <Button
-            android:id="@+id/stop"
+            android:id="@+id/_stop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="停止"

@@ -117,7 +117,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MemoryModelActivity"
-            android:label="记忆模式"/>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

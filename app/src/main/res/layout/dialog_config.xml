@@ -8,15 +8,18 @@
     android:layout_marginTop="10dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    tools:context=".WayPointActivity">
+    tools:context=".MemoryModelActivity">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/way_point_config"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal">
     </TextView>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,54 +32,30 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Altitude">
-        </TextView>
-        <EditText
-            android:id="@+id/altitude"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/speed"></TextView>
-
+            android:text="@string/speed">
+        </TextView>
         <RadioGroup
-            android:id="@+id/speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+            android:id="@+id/speedRG"
+            android:layout_gravity="center_horizontal">
             <RadioButton
-                android:id="@+id/lowSpeed"
+                android:id="@+id/lowSpeedSelec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/low" />
-
+                android:text="@string/low"/>
             <RadioButton
-                android:id="@+id/MidSpeed"
+                android:id="@+id/midSpeedSelec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/mid" />
-
+                android:text="@string/mid"/>
             <RadioButton
-                android:id="@+id/HighSpeed"
+                android:id="@+id/highSpeedSelec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/high" />
+                android:text="@string/high"/>
         </RadioGroup>
     </LinearLayout>
 
@@ -102,28 +81,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/actionAfterFinished"
+            android:id="@+id/actionFinished"
             android:layout_gravity="center_horizontal">
             <RadioButton
-                android:id="@+id/finishNone"
+                android:id="@+id/finishNoneSelec"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:textSize="6.5pt"
                 android:text="@string/None"/>
             <RadioButton
-                android:id="@+id/finishGoHome"
+                android:id="@+id/finishGoHomeSelec"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:textSize="6.5pt"
                 android:text="@string/GoHome"/>
             <RadioButton
-                android:id="@+id/finishAutoLanding"
+                android:id="@+id/finishAutoLandingSelec"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:textSize="6.5pt"
                 android:text="@string/AutoLand"/>
             <RadioButton
-                android:id="@+id/finishToFirst"
+                android:id="@+id/finishToFirstSelec"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:textSize="6.5pt"
@@ -148,37 +127,42 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <RadioGroup
+            android:id="@+id/head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/heading"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
             <RadioButton
-                android:id="@+id/headingNext"
+                android:id="@+id/headingNextSelec"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:textSize="6.5pt"
-                android:text="@string/Auto"/>
+                android:text="@string/Auto"
+                android:textSize="6.5pt" />
+
             <RadioButton
-                android:id="@+id/headingInitDirec"
+                android:id="@+id/headingInitDirecSelec"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:textSize="6.5pt"
-                android:text="@string/Initial"/>
+                android:text="初始值"
+                android:textSize="6.5pt" />
+
             <RadioButton
-                android:id="@+id/headingRC"
+                android:id="@+id/headingRCSelec"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:textSize="6.5pt"
-                android:text="@string/RC_Control"/>
+                android:text="@string/RC_Control"
+                android:textSize="6.5pt" />
+
             <RadioButton
-                android:id="@+id/headingWP"
+                android:id="@+id/headingWPSelec"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:textSize="6.5pt"
-                android:text="@string/Use_Waypoint"/>
+                android:text="@string/Use_Waypoint"
+                android:textSize="6.5pt" />
         </RadioGroup>
     </LinearLayout>
 </LinearLayout>

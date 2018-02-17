@@ -578,7 +578,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         new AlertDialog.Builder(this)
                 .setTitle("")
                 .setView(wayPointSettings)
-                .setPositiveButton("Finish",new DialogInterface.OnClickListener(){
+                .setPositiveButton("确定",new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id) {
 
                         String altitudeString = wpAltitude_TV.getText().toString();
@@ -591,7 +591,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                     }
 
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }

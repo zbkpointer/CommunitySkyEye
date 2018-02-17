@@ -21,4 +21,23 @@
     <string name="title_activity_place">PlaceActivity</string>
     <string name="title_activity_sub_place">SubPlaceActivity</string>
     <string name="title_activity_memory_model">memoryModelActivity</string>
+
+    <string name="way_point_config">航点任务配置</string>
+    <string name="Altitude">高度：</string>
+    <string name="speed">速度：</string>
+    <string name="low">低</string>
+    <string name="mid">中</string>
+    <string name="high">高</string>
+    <string name="Action_After_Finished">任务结束动作:</string>
+    <string name="None">无</string>
+    <string name="GoHome">返航</string>
+    <string name="AutoLand">自动降落</string>
+    <string name="BackTo_1st">返回第一点</string>
+    <string name="Heading">飞机朝向:</string>
+    <string name="Auto">自动</string>
+    <string name="Initial">初始值</string>
+    <string name="RC_Control">飞控控制</string>
+    <string name="Use_Waypoint">航点规划</string>
+
+
 </resources>
