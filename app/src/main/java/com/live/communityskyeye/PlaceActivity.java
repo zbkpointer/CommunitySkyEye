@@ -1,11 +1,9 @@
 package com.live.communityskyeye;
 
-import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,23 +11,15 @@ import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +31,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
     private ListView mListView;
     private Button mBtn_insert;
     private Button mBtn_query;
-    private EditText mEt_songName;
+    private EditText mEt_placeName;
     private EditText mEt_singer;
     private EditText mEt_input;
   //  private EditText mEt_dialog_songName;
@@ -71,7 +61,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
                 //通过游标选择点击的内容
                 Cursor mCursor = mSimpleCursorAdapter.getCursor();
                 mCursor.moveToPosition(position);
-                String placeName = mCursor.getString(mCursor.getColumnIndex("songname"));
+                String placeName = mCursor.getString(mCursor.getColumnIndex("placename"));
 
                 Intent intent = new Intent();
 
@@ -101,24 +91,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
                 return true;
             }
         });
-/*
-        //ListviewActivity与RecyclerviewActivity的切换
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.listview_menu:
-                        startActivity(new Intent(MyListviewActivity.this, MyListviewActivity.class));
-                        break;
-                    case R.id.recyclerview_menu:
-                        startActivity(new Intent(MyListviewActivity.this, MyRecyclerviewActivity.class));
-                        break;
-                }
-                return true;
-            }
-        });
 
-*/
     }
 
     @Override
@@ -132,7 +105,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
         mListView = (ListView) findViewById(R.id.myListview);
         mBtn_insert = (Button) findViewById(R.id.btn_insert);
         mBtn_query = (Button) findViewById(R.id.btn_query);
-        mEt_songName = (EditText) findViewById(R.id.et_songname);
+        mEt_placeName = (EditText) findViewById(R.id.et_placename);
         mEt_singer = (EditText) findViewById(R.id.et_singer);
         mEt_input = (EditText) findViewById(R.id.et_query);
 
@@ -148,7 +121,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
         mDbReader = mMySQLite.getReadableDatabase();
 
         mSimpleCursorAdapter = new SimpleCursorAdapter(PlaceActivity.this, R.layout.listview_sql_item, null,
-                new String[]{"songname", "singer"}, new int[]{R.id.songname, R.id.singer}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+                new String[]{"placename"}, new int[]{R.id.placename}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
         mListView.setAdapter(mSimpleCursorAdapter);     //给ListView设置适配器
         refreshListview();      //自定义的方法，用于当数据列表改变时刷新ListView
@@ -157,17 +130,17 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
 
     //刷新数据列表
     public  void refreshListview() {
-        Cursor mCursor = mDbWriter.query("music_msg", null, null, null, null, null, null);
+        Cursor mCursor = mDbWriter.query("place_msg", null, null, null, null, null, null);
         mSimpleCursorAdapter.changeCursor(mCursor);
     }
 
     //增
     public void insertData() {
         ContentValues mContentValues = new ContentValues();
-        mContentValues.put("songname", mEt_songName.getText().toString().trim());
+        mContentValues.put("placename", mEt_placeName.getText().toString().trim());
         //  mContentValues.put("singer", this.getTime().trim());
         //   mContentValues.put("singer", mEt_singer.getText().toString().trim());
-        mDbWriter.insert("music_msg", null, mContentValues);
+        mDbWriter.insert("place_msg", null, mContentValues);
         refreshListview();
     }
 
@@ -176,7 +149,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
         Cursor mCursor = mSimpleCursorAdapter.getCursor();
         mCursor.moveToPosition(positon);
         int itemId = mCursor.getInt(mCursor.getColumnIndex("_id"));
-        mDbWriter.delete("music_msg", "_id=?", new String[]{itemId + ""});
+        mDbWriter.delete("place_msg", "_id=?", new String[]{itemId + ""});
         refreshListview();
     }
 /*
@@ -186,9 +159,9 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
         mCursor.moveToPosition(positon);
         int itemId = mCursor.getInt(mCursor.getColumnIndex("_id"));
         ContentValues mContentValues = new ContentValues();
-        mContentValues.put("songname", mEt_dialog_songName.getText().toString().trim());
+        mContentValues.put("placename", mEt_dialog_songName.getText().toString().trim());
         mContentValues.put("singer", mEt_dialog_singer.getText().toString().trim());
-        mDbWriter.update("music_msg", mContentValues, "_id=?", new String[]{itemId + ""});
+        mDbWriter.update("place_msg", mContentValues, "_id=?", new String[]{itemId + ""});
         refreshListview();
     }
 */
@@ -197,8 +170,8 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
         String mInput = mEt_input.getText().toString().trim();
         //第二个参数是你需要查找的列
         //第三和第四个参数确定是从哪些行去查找第二个参数的列
-        Cursor mCursor1 = mDbReader.query("music_msg", new String[]{"singer"}, "songname=?", new String[]{mInput}, null, null, null);
-        Cursor mCursor2 = mDbReader.query("music_msg", new String[]{"songname"}, "singer=?", new String[]{mInput}, null, null, null);
+        Cursor mCursor1 = mDbReader.query("place_msg", new String[]{"singer"}, "placename=?", new String[]{mInput}, null, null, null);
+        Cursor mCursor2 = mDbReader.query("place_msg", new String[]{"placename"}, "singer=?", new String[]{mInput}, null, null, null);
         if (mCursor1.getCount() > 0) {
             mStringList.clear();        //清空List
             while (mCursor1.moveToNext()) {     //游标总是在查询到的上一行
@@ -213,7 +186,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
             mStringList.clear();        //清空List
             while (mCursor2.moveToNext()) {     //游标总是在查询到的上一行
                 Map<String, String> mMap = new HashMap<>();
-                String output_songname = mCursor2.getString(mCursor2.getColumnIndex("songname"));
+                String output_songname = mCursor2.getString(mCursor2.getColumnIndex("placename"));
                 mMap.put("tv1", output_songname);
                 mMap.put("tv2", mInput);
                 mStringList.add(mMap);
@@ -226,20 +199,14 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
             mStringList.add(mMap);
         }
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-*/
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             //点击添加按钮
             case R.id.btn_insert:
                 insertData();
-                mEt_songName.setText("");
+                mEt_placeName.setText("");
                 mEt_singer.setText("");
                 break;
             //点击查询按钮
@@ -258,16 +225,6 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-
-    private String getTime(){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss ");
-
-        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-
-        String str = formatter.format(curDate);
-
-        return str;
-    }
 
 
 }

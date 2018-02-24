@@ -42,7 +42,7 @@
         android:layout_alignParentStart="true">
 
         <EditText
-            android:id="@+id/et_songname"
+            android:id="@+id/et_placename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"

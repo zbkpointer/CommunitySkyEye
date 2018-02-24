@@ -99,8 +99,8 @@ public class MyOwnApplication extends Application {
 
 
             for (String scene:scene_set) {
-                values.put("songname", scene.trim());
-                db.getWritableDatabase().insert("music_msg", null, values);
+                values.put("placename", scene.trim());
+                db.getWritableDatabase().insert("place_msg", null, values);
                 values.clear();
 
             }

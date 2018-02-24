@@ -171,7 +171,9 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
         cameraUpdate();
         int counter = 1;
         for (LatLng latLng:mList) {
-            markWaypoint(latLng,Integer.toString(counter));
+            SimpleCoodinates pos = WgsGcjConverter.wgs84ToGcj02(latLng.latitude, latLng.longitude);
+            LatLng latLng1 = new LatLng(pos.getLat(),pos.getLon());
+            markWaypoint(latLng1,Integer.toString(counter));
             counter+=1;
         }
 
@@ -323,8 +325,8 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
 
     }
     private void cameraUpdate(){
-
-        LatLng pos = new LatLng(mList.get(0).latitude, mList.get(0).longitude);
+        SimpleCoodinates pos1 = WgsGcjConverter.wgs84ToGcj02(mList.get(0).latitude, mList.get(0).longitude);
+        LatLng pos = new LatLng(pos1.getLat(),pos1.getLon());
         float zoomlevel = (float) 18.0;
         CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(pos, zoomlevel);
         aMap.moveCamera(cu);

@@ -121,7 +121,7 @@ public class SubPlaceActivity extends AppCompatActivity implements View.OnClickL
       //  System.out.println(mCursor.getLong(mCursor.getColumnIndex("_startTime")));
 
         mSimpleCursorAdapter = new SimpleCursorAdapter(SubPlaceActivity.this, R.layout.listview_sql_item, null,
-                new String[]{"_placeName", "_placeDate"}, new int[]{R.id.songname, R.id.singer}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+                new String[]{"_placeName", "_placeDate"}, new int[]{R.id.placename, R.id.singer}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
         mListView.setAdapter(mSimpleCursorAdapter);     //给ListView设置适配器
         refreshListview();      //自定义的方法，用于当数据列表改变时刷新ListView
