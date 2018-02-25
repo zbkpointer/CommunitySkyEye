@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">小区天眼</string>
+    <string name="push_info">Push Info</string>
+
     <string name="scene_activity">场景模式</string>
     <string name="title_activity_add_surface">新增监控点</string>
     <string name="title_activity_sub_scene">子场景</string>
@@ -38,6 +40,8 @@
     <string name="Initial">初始值</string>
     <string name="RC_Control">飞控控制</string>
     <string name="Use_Waypoint">航点规划</string>
+    <string name="title_activity_media_manage">MediaManageActivity</string>
+
 
 
 </resources>
