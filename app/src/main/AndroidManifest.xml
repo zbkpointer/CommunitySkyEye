@@ -97,10 +97,6 @@
             android:label="@string/scene_activity"
             android:launchMode="standard" />
         <activity
-            android:name=".add_surface"
-            android:label="@string/title_activity_add_surface"
-            android:launchMode="standard" />
-        <activity
             android:name=".SubScene"
             android:screenOrientation="landscape" />
         <activity
