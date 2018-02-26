@@ -291,9 +291,9 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
                         public void run() {
                             if(isRecord==true) {
                                 ContentValues mContentValues = new ContentValues();
-                                mContentValues.put("_Lag",String.valueOf(30.596745));
-                                mContentValues.put("_Log",String.valueOf(114.303365));
-                                mContentValues.put("_Alt",String.valueOf(6.66));
+                                mContentValues.put("_Lag",String.valueOf(droneLocationLat));
+                                mContentValues.put("_Log",String.valueOf(droneLocationLng));
+                                mContentValues.put("_Alt",String.valueOf(droneAltitude));
                                 mContentValues.put("_Time",System.currentTimeMillis());
                                 mDbWriter.insert("Lag_Log",null,mContentValues);
                                 System.out.println(mContentValues.getAsString("_Time"));

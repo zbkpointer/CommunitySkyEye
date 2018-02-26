@@ -87,9 +87,7 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
 
     private List<LatLng> mList = new ArrayList<>();//编程必须加后边的实例化
     private List<Float> mAltList = new ArrayList<>();
-
-  //  private List<Double> mLagData = new ArrayList<>();
- //   private List<Double> mLogData = new ArrayList<>();
+    private List<LatLng> mMapList = new ArrayList<>();//转换后的火星坐标用于绘制航线
 
 
 
@@ -107,13 +105,18 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
         initData();
         initUI();
         initMapView();
+
+
+
+
         addListener();
         initWayPointMission();
+
         //画出已经飞过的航点
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                aMap.addPolyline(new PolylineOptions().addAll(mList).width(12).color(Color.argb(255,0,255,0)));
+                aMap.addPolyline(new PolylineOptions().addAll(mMapList).width(12).color(Color.argb(255,0,255,0)));
 
             }
         });
@@ -124,12 +127,11 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
 
 
 
-
-
     @Override
     protected void onResume(){
         super.onResume();
         mapView.onResume();
+
         initFlightController();
 
 
@@ -169,13 +171,18 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
         }
 
         cameraUpdate();
+
         int counter = 1;
         for (LatLng latLng:mList) {
             SimpleCoodinates pos = WgsGcjConverter.wgs84ToGcj02(latLng.latitude, latLng.longitude);
             LatLng latLng1 = new LatLng(pos.getLat(),pos.getLon());
+            mMapList.add(latLng1);
             markWaypoint(latLng1,Integer.toString(counter));
             counter+=1;
         }
+
+
+
 
     }
 
@@ -474,7 +481,7 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
         if (error == null) {
             setResultToToast("加载航点任务成功");
         } else {
-            setResultToToast("loadWaypoint failed " + error.getDescription());
+            setResultToToast("加载航点任务失败 " + error.getDescription());
         }
 
 
@@ -486,9 +493,9 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onResult(DJIError error) {
                 if (error == null) {
-                    setResultToToast("Mission upload successfully!");
+                    setResultToToast("任务上传成功!");
                 } else {
-                    setResultToToast("Mission upload failed, error: " + error.getDescription() + " retrying...");
+                    setResultToToast("任务上传失败, 错误: " + error.getDescription() + " 重试...");
                     getWaypointMissionOperator().retryUploadMission(null);
                 }
             }
@@ -501,7 +508,7 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
         getWaypointMissionOperator().startMission(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError error) {
-                setResultToToast("Mission Start: " + (error == null ? "Successfully" : error.getDescription()));
+                setResultToToast("任务开始: " + (error == null ? "成功" : error.getDescription()));
             }
         });
 
@@ -512,7 +519,7 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
         getWaypointMissionOperator().stopMission(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError error) {
-                setResultToToast("Mission Stop: " + (error == null ? "Successfully" : error.getDescription()));
+                setResultToToast("任务停止: " + (error == null ? "成功" : error.getDescription()));
             }
         });
 

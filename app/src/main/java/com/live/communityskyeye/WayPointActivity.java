@@ -347,7 +347,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
 
         @Override
         public void onExecutionFinish(@Nullable final DJIError error) {
-            setResultToToast("Execution finished: " + (error == null ? "Success!" : error.getDescription()));
+            setResultToToast("执行结束: " + (error == null ? "成功!" : error.getDescription()));
         }
     };
 
@@ -381,7 +381,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                 waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
             }
             }else{
-            setResultToToast("Cannot Add Waypoint");
+            setResultToToast("不能添加航点");
             }
             //绘制航线
             runOnUiThread(new Runnable() {
@@ -640,14 +640,14 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                 waypointMissionBuilder.getWaypointList().get(i).altitude = altitude;
             }
 
-            setResultToToast("Set Waypoint attitude successfully");
+            setResultToToast("设置航点高度成功");
         }
 
         DJIError error = getWaypointMissionOperator().loadMission(waypointMissionBuilder.build());
         if (error == null) {
-            setResultToToast("loadWaypoint succeeded");
+            setResultToToast("加载航点任务成功");
         } else {
-            setResultToToast("loadWaypoint failed " + error.getDescription());
+            setResultToToast("加载航点任务失败 " + error.getDescription());
         }
 
     }
@@ -658,9 +658,9 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
             @Override
             public void onResult(DJIError error) {
                 if (error == null) {
-                    setResultToToast("Mission upload successfully!");
+                    setResultToToast("任务上传成功!");
                 } else {
-                    setResultToToast("Mission upload failed, error: " + error.getDescription() + " retrying...");
+                    setResultToToast("任务上传失败, 错误: " + error.getDescription() + " 重试...");
                     getWaypointMissionOperator().retryUploadMission(null);
                 }
             }
@@ -673,7 +673,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         getWaypointMissionOperator().startMission(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError error) {
-                setResultToToast("Mission Start: " + (error == null ? "Successfully" : error.getDescription()));
+                setResultToToast("任务开始: " + (error == null ? "成功" : error.getDescription()));
             }
         });
 
@@ -684,7 +684,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         getWaypointMissionOperator().stopMission(new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(DJIError error) {
-                setResultToToast("Mission Stop: " + (error == null ? "Successfully" : error.getDescription()));
+                setResultToToast("任务停止: " + (error == null ? "成功" : error.getDescription()));
             }
         });
 
