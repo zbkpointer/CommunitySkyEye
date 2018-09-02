@@ -1,5 +1,6 @@
 package com.live.communityskyeye;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -81,6 +82,7 @@ public class SubPlaceActivity extends AppCompatActivity implements View.OnClickL
                             }
                         })
                         .setNegativeButton("取消", null)
+                        .setCancelable(false)
                         .show();
                 return true;
             }
@@ -147,7 +149,6 @@ public class SubPlaceActivity extends AppCompatActivity implements View.OnClickL
         mDbWriter.delete("sub_place", "_id=?", new String[]{itemId + ""});
         refreshListview();
     }
-
 
 
 

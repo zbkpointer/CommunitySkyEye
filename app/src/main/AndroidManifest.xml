@@ -21,6 +21,8 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
     <uses-feature
         android:name="android.hardware.usb.host"
         android:required="false" />
@@ -61,38 +63,26 @@
             <meta-data
                 android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
                 android:resource="@xml/accessory_filter" />
+
         </activity>
 
         <service android:name="dji.sdk.sdkmanager.DJIGlobalService" />
         <!-- DJI SDK -->
 
+
         <activity
-            android:name=".ConnectionActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
+                  android:name=".MainActivity"
+                  android:label="小区天眼"
+                  android:theme="@style/AppTheme.NoActionBar">
 
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                  <intent-filter>
+                      <action android:name="android.intent.action.MAIN" />
+                      <category android:name="android.intent.category.LAUNCHER" />
+                  </intent-filter>
 
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="绑定与激活" />
-        <activity
-            android:name=".MainActivity"
-            android:label="小区天眼"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".LoginActivity">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
         </activity>
         <activity
             android:name=".UIActivity"
@@ -100,7 +90,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".WayPointActivity"
-            android:screenOrientation="portrait" />
+            android:label="自由模式" />
         <activity
             android:name=".PlaceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -109,6 +99,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MemoryModelActivity"
+            android:label="场景模式"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MediaManageActivity"

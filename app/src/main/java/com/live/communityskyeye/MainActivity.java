@@ -6,11 +6,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import dji.common.realname.AircraftBindingState;
+import dji.common.realname.AppActivationState;
+import dji.sdk.realname.AppActivationManager;
+import dji.sdk.sdkmanager.DJISDKManager;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private Button mediaPlay;
     private Button sceneMode;
     private Button optimizingMmode;
+    private Button login;
+
+
+    private AppActivationManager appActivationManager;
+    private AircraftBindingState.AircraftBindingStateListener bindingStateListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initUI();
         initEvent();
 
-
     }
 
 
@@ -27,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlay = (Button)findViewById(R.id.mediaPlay);
         sceneMode = (Button)findViewById(R.id.scene_mode);
         optimizingMmode = (Button)findViewById(R.id.optimizing_mode);
+        login = (Button)findViewById(R.id.login);
 
     }
 
@@ -34,7 +44,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlay.setOnClickListener(this);
         sceneMode.setOnClickListener(this);
         optimizingMmode.setOnClickListener(this);
+        login.setOnClickListener(this);
+
     }
+
 
     @Override
     public void onClick(View v) {
@@ -55,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 //启动自由模式
                 startActivity(new Intent(MainActivity.this,WayPointActivity.class));
+                break;
+            }
+            case R.id.login:{
+                //启动自由模式
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 break;
             }
             default:

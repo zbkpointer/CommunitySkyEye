@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
@@ -66,7 +67,7 @@ import dji.sdk.sdkmanager.DJISDKManager;
 import dji.sdk.useraccount.UserAccountManager;
 
 
-public class WayPointActivity extends FragmentActivity implements View.OnClickListener, OnMapClickListener {
+public class WayPointActivity extends AppCompatActivity implements View.OnClickListener, OnMapClickListener {
 
     protected static final String TAG = "WayPointActivity";
 
@@ -88,7 +89,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     private Marker droneMarker = null;
 
     private float  altitude = 100.0f;
-    private float mSpeed = 10.0f;
+    private float  mSpeed = 10.0f;
 
     private int number = 0;
 
@@ -187,7 +188,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         aMap.addMarker(new MarkerOptions()
                 .position(wuhan)
                 .title("Hi>>>")
-                .snippet("欢迎使用自由航点设置管理系统")).showInfoWindow();
+                .snippet("欢迎使用自由模式飞行")).showInfoWindow();
         aMap.moveCamera(CameraUpdateFactory.newLatLng(wuhan));
     }
 
@@ -208,6 +209,19 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.VIBRATE,
+                            android.Manifest.permission.INTERNET, android.Manifest.permission.ACCESS_WIFI_STATE,
+                            android.Manifest.permission.WAKE_LOCK, android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            android.Manifest.permission.ACCESS_NETWORK_STATE, android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.CHANGE_WIFI_STATE, android.Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.SYSTEM_ALERT_WINDOW,
+                            android.Manifest.permission.READ_PHONE_STATE,
+                    }
+                    , 1);
+        }
+
         setContentView(R.layout.activity_way_point);
 
         IntentFilter filter = new IntentFilter();
@@ -222,7 +236,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         addListener();
 
         mHandler = new Handler();
-
+        //主线程不能执行耗时操作
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -597,6 +611,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                     }
 
                 })
+                .setCancelable(false)
                 .create()
                 .show();
     }

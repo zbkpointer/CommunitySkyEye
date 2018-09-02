@@ -104,30 +104,7 @@ public class MyOwnApplication extends Application {
                 values.clear();
 
             }
-/*
-            Connector.getDatabase();
-            Place place1 = new Place();
-            place1.setPlace_name("小区围墙");
-            place1.save();
 
-
-            Place place2 = new Place();
-            place2.setPlace_name("绿化");
-            place2.save();
-
-
-            Place place3 = new Place();
-            place3.setPlace_name("停车场");
-            place3.save();
-
-            Place place4 = new Place();
-            place4.setPlace_name("屋顶");
-            place4.save();
-
-            Place place5 = new Place();
-            place5.setPlace_name("行车道");
-            place5.save();
-*/
         }
         mHandler = new Handler(Looper.getMainLooper());
 

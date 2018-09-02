@@ -159,6 +159,7 @@ public class UIActivity extends AppCompatActivity implements  View.OnClickListen
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if(keyCode == KeyEvent.KEYCODE_BACK) {
+
             this.finish();
 
         //    mDbWriter.close();

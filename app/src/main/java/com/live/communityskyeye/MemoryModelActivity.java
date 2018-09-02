@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -85,7 +86,7 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
     private long startTime = 0 ;
     private long endTime = 0;
 
-    private List<LatLng> mList = new ArrayList<>();//编程必须加后边的实例化
+    private List<LatLng> mList = new ArrayList<>();//编程必须加后边的初始化
     private List<Float> mAltList = new ArrayList<>();
     private List<LatLng> mMapList = new ArrayList<>();//转换后的火星坐标用于绘制航线
 
@@ -98,6 +99,10 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
 
         mapView = (MapView) findViewById(R.id.Amap);
         mapView.onCreate(savedInstanceState);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MyOwnApplication.FLAG_CONNECTION_CHANGE);
+        registerReceiver(mReceiver, filter);
 
         Intent intent = getIntent();
         startTime = intent.getLongExtra("startTime",0);
@@ -148,6 +153,7 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
         waypointList.clear();
         mySQLite.close();
         waypointMissionBuilder.waypointList(waypointList);
+        unregisterReceiver(mReceiver);
         removeListener();
     }
 
@@ -217,6 +223,19 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
             setResultToToast("添加航点任务成功");
 
 
+    }
+
+    protected BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onProductConnectionChange();
+        }
+    };
+
+    private void onProductConnectionChange()
+    {
+        initFlightController();
     }
 
 
@@ -453,6 +472,7 @@ public class MemoryModelActivity extends AppCompatActivity implements View.OnCli
                     }
 
                 })
+                .setCancelable(false)
                 .create()
                 .show();
     }

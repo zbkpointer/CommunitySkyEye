@@ -182,15 +182,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:{
                 //判断字符串组件中的字符是否包含ACTIVATED，如果是已激活，就直接跳转到主界面，
                 // 否则登录至大疆账号。
+                /*
                 if(appActivationStateTV.getText().toString().contains("ACTIVATED"))
                 {
                     Intent intent = new Intent(this,MainActivity.class);
                     startActivity(intent);
                 }
                 else {
-                    loginAccount();
-                }
 
+                }
+                */
+                loginAccount();
                 break;
             }
             case R.id.btn_logout:{
@@ -208,11 +210,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
                     @Override
                     public void onSuccess(final UserAccountState userAccountState) {
-                        showToast("Login Success");
+                        showToast("登录成功");
+                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                        startActivity(intent);
                     }
                     @Override
                     public void onFailure(DJIError error) {
-                        showToast("Login Error:"
+                        showToast("登录失败:"
                                 + error.getDescription());
                     }
                 });
@@ -224,9 +228,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResult(DJIError error) {
                 if (null == error) {
-                    showToast("Logout Success");
+                   LoginActivity.this.runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           bindingStateTV.setText("Unknown");
+                           appActivationStateTV.setText("Unknown");
+                       }
+                   });
+                    showToast("退出成功");
                 } else {
-                    showToast("Logout Error:"
+                    showToast("退出失败:"
                             + error.getDescription());
                 }
             }

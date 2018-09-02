@@ -87,6 +87,7 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
                             }
                         })
                         .setNegativeButton("取消", null)
+                        .setCancelable(false)
                         .show();
                 return true;
             }
@@ -217,7 +218,9 @@ public class PlaceActivity extends AppCompatActivity implements View.OnClickList
                         .setTitle("查询结果")
                         .setAdapter(new SimpleAdapter(PlaceActivity.this, mStringList, R.layout.dialog_tv_layout, new String[]{"tv1", "tv2"}, new int[]{R.id.tv1_dialog, R.id.tv2_dialog}), null)
                         .setPositiveButton("确定", null)
+                        .setCancelable(false)
                         .show();
+
                 break;
 
         }
